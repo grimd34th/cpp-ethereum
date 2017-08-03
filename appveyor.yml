@@ -11,10 +11,11 @@ configuration:
   - RelWithDebInfo
 cache:
   - C:/.hunter/_Base/Cache -> cmake/Hunter/config.cmake
+  - C:/CUDA -> appveyor.yml
 
 install: |
-  appveyor DownloadFile https://github.com/ethereum/cpp-dependencies/releases/download/cache/CUDA-v8.0-WindowsServer2012.zip
-  7z x CUDA-v8.0-WindowsServer2012.zip -oC:/
+  if not exist C:/CUDA/v8.0/bin/nvcc.exe appveyor DownloadFile https://github.com/ethereum/cpp-dependencies/releases/download/cache/CUDA-v8.0-WindowsServer2012.zip -FileName CUDA-v8.0-WindowsServer2012.zip
+  if exist CUDA-v8.0-WindowsServer2012.zip 7z x CUDA-v8.0-WindowsServer2012.zip -oC:/
   set PATH=%PATH%;C:/CUDA/v8.0/bin
   nvcc -V
 before_build:
